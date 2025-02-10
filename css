@@ -1,0 +1,36 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 20px;
+}
+
+#bracket-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.bracket {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.match {
+  margin: 10px 0;
+}
+
+#prediction-options {
+  margin: 20px 0;
+}
+
+#leaderboard {
+  margin-top: 30px;
+}
+
+#leaderboard p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
