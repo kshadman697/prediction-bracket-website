@@ -1,219 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tournament Bracket</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Bracket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
 
-    h1 {
-      margin-top: 20px;
-    }
+        .bracket-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
 
-    .bracket {
-      display: flex;
-      justify-content: center;
-      margin: 20px auto;
-      overflow-x: auto;
-      padding: 10px;
-    }
+        .quadrant {
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-gap: 10px;
+        }
 
-    .round {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 20px;
-    }
+        .matchup {
+            text-align: center;
+            border: 1px solid black;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white;
+        }
 
-    .matchup {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 50px;
-      width: 150px;
-      margin: 20px 0;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        .matchup.selected {
+            background-color: lightgreen;
+        }
 
-    .matchup:hover {
-      background-color: #add8e6;
-    }
+        .finals {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
-    .line {
-      border-left: 2px solid #ccc;
-      height: 20px;
-      margin: 0 auto;
-    }
+        .final-matchup {
+            text-align: center;
+            border: 1px solid black;
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+            cursor: pointer;
+        }
 
-    .connector {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 150px;
-      height: 20px;
-    }
+        .leaderboard {
+            margin-top: 40px;
+            border: 1px solid black;
+            padding: 10px;
+            width: 50%;
+            text-align: center;
+        }
 
-    .connector div {
-      flex: 1;
-      height: 2px;
-      background: #ccc;
-    }
+        .leaderboard table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .selected {
-      background-color: #add8e6;
-      border-color: #007bff;
-    }
-  </style>
+        .leaderboard th, .leaderboard td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        .leaderboard th {
+            background-color: #f4f4f4;
+        }
+    </style>
 </head>
 <body>
-  <h1>Tournament Bracket</h1>
-  <div class="bracket">
-    <!-- Round 1 (64 Players) -->
-    <div class="round">
-      <div class="matchup" data-match="1">Player 1</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="2">Player 2</div>
+    <h1>Tournament Bracket</h1>
 
-      <div class="line"></div>
-
-      <div class="matchup" data-match="3">Player 3</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="4">Player 4</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="5">Player 5</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="6">Player 6</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="7">Player 7</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="8">Player 8</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="9">Player 9</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="10">Player 10</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="11">Player 11</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="12">Player 12</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="13">Player 13</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="14">Player 14</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="15">Player 15</div>
-      <div class="connector">
-        <div></div>
-        <div class="line"></div>
-      </div>
-      <div class="matchup" data-match="16">Player 16</div>
+    <div class="bracket-container">
+        <!-- Four quadrants -->
+        <div class="quadrant" id="quadrant1"></div>
+        <div class="quadrant" id="quadrant2"></div>
+        <div class="quadrant" id="quadrant3"></div>
+        <div class="quadrant" id="quadrant4"></div>
     </div>
 
-    <!-- Round 2 (32 Players) -->
-    <div class="round">
-      <div class="matchup" data-match="17">Winner 1</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="18">Winner 2</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="19">Winner 3</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="20">Winner 4</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="21">Winner 5</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="22">Winner 6</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="23">Winner 7</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="24">Winner 8</div>
+    <div class="finals">
+        <h2>Finals</h2>
+        <div class="final-matchup" id="final"></div>
+        <h3>Champion: <span id="champion"></span></h3>
     </div>
 
-    <!-- Round 3 (16 Players) -->
-    <div class="round">
-      <div class="matchup" data-match="25">Winner 9</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="26">Winner 10</div>
-
-      <div class="line"></div>
-
-      <div class="matchup" data-match="27">Winner 11</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="28">Winner 12</div>
+    <div class="leaderboard">
+        <h2>Leaderboard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Points</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+        </table>
     </div>
 
-    <!-- Round 4 (8 Players) -->
-    <div class="round">
-      <div class="matchup" data-match="29">Winner 13</div>
-      <div class="line"></div>
-      <div class="matchup" data-match="30">Winner 14</div>
-    </div>
+    <script>
+        const playersPerQuadrant = 16;
+        const quadrants = ["quadrant1", "quadrant2", "quadrant3", "quadrant4"];
+        const leaderboard = {};
 
-    <!-- Final -->
-    <div class="round">
-      <div class="matchup" data-match="31">Champion</div>
-    </div>
-  </div>
+        function generateQuadrants() {
+            quadrants.forEach((quadrantId, index) => {
+                const quadrant = document.getElementById(quadrantId);
+                for (let i = 1; i <= playersPerQuadrant; i++) {
+                    const matchup = document.createElement("div");
+                    matchup.className = "matchup";
+                    matchup.textContent = `Player ${i + index * playersPerQuadrant}`;
+                    matchup.addEventListener("click", () => selectMatchup(matchup, quadrantId));
+                    quadrant.appendChild(matchup);
+                }
+            });
+        }
 
-  <script>
-    document.querySelectorAll('.matchup').forEach(matchup => {
-      matchup.addEventListener('click', () => {
-        // Deselect all matchups in the same round
-        const parentRound = matchup.parentElement;
-        parentRound.querySelectorAll('.matchup').forEach(m => m.classList.remove('selected'));
+        function selectMatchup(matchup, quadrantId) {
+            const selected = document.querySelector(`#${quadrantId} .selected`);
+            if (selected) selected.classList.remove("selected");
+            matchup.classList.add("selected");
+        }
 
-        // Select the clicked matchup
-        matchup.classList.add('selected');
-      });
-    });
-  </script>
+        function calculatePoints() {
+            // Simulate points calculation for simplicity
+            leaderboard["Player 1"] = 30;
+            leaderboard["Player 2"] = 25;
+            leaderboard["Player 3"] = 20;
+            updateLeaderboard();
+        }
+
+        function updateLeaderboard() {
+            const tbody = document.getElementById("leaderboard-body");
+            tbody.innerHTML = "";
+            Object.entries(leaderboard).forEach(([player, points]) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td>${player}</td><td>${points}</td>`;
+                tbody.appendChild(row);
+            });
+        }
+
+        generateQuadrants();
+        calculatePoints();
+    </script>
 </body>
 </html>
